@@ -10,6 +10,9 @@ import org.json.JSONObject;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -30,7 +33,6 @@ import javax.xml.transform.stream.StreamSource;
  *
  * @author wangxin
  *         github https://github.com/AandK/JLog
-
  */
 
 public class JLog {
@@ -41,7 +43,7 @@ public class JLog {
     private static final String DEFAULT_MESSAGE = "execute";
     private static final String PARAM = "Param";
     private static final String NULL = "null";
-    private static final String TAG_DEFAULT = "JLog";
+    private static final String TAG_DEFAULT = "ahking";//ahking
     private static final String SUFFIX = ".java";
 
     public static final int JSON_INDENT = 4;
@@ -58,7 +60,7 @@ public class JLog {
 
     private static final int STACK_TRACE_INDEX = 5;
 
-    private static String mGlobalTag;
+    private static String mGlobalTag = "ahking";
     private static boolean mIsGlobalTagEmpty = true;
     private static boolean IS_SHOW_LOG = true;
 
@@ -103,6 +105,22 @@ public class JLog {
             Log.i(mGlobalTag,headString);
         }
         printStackTraceLine(mGlobalTag, false);
+
+    }
+
+
+    public static void printHashMapObj(Object map) {
+        printHashMapLine(mGlobalTag, true);
+
+        String str = map.toString();
+        String subStr = str.substring(1,str.length()-1);
+        String[] objList = subStr.split(",");
+        Log.i(mGlobalTag, "║ " + "total element number : " + objList.length);
+        for(String obj:objList) {
+            String[] kv = obj.split("=");
+            Log.i(mGlobalTag,"║ " + "key = " + kv[0].trim() + ", value = " + kv[1].trim());
+        }
+        printHashMapLine(mGlobalTag, false);
 
     }
 
@@ -246,7 +264,8 @@ public class JLog {
 
         String methodNameShort = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
 
-        String tag = (tagStr == null ? className : tagStr);
+//        String tag = (tagStr == null ? className : tagStr);
+        String tag = (tagStr == null ? "ahking" : tagStr);//ahking
 
         if (mIsGlobalTagEmpty && TextUtils.isEmpty(tag)) {
             tag = TAG_DEFAULT;
@@ -326,6 +345,14 @@ public class JLog {
             Log.d(tag, "╔════════════════════════════════ Stack Trace Begin ══════════════════════════════════");
         } else {
             Log.d(tag, "╚════════════════════════════════ Stack Trace End ════════════════════════════════════");
+        }
+    }
+
+    public static void printHashMapLine(String tag, boolean isTop) {
+        if (isTop) {
+            Log.d(tag, "╔════════════════════════════════ HashMap object Begin ══════════════════════════════════");
+        } else {
+            Log.d(tag, "╚════════════════════════════════ HashMap object End ════════════════════════════════════");
         }
     }
 
