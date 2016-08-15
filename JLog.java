@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -113,7 +114,7 @@ public class JLog {
         printHashMapLine(mGlobalTag, true);
 
         String str = map.toString();
-        String subStr = str.substring(1,str.length()-1);
+        String subStr = str.substring(1, str.length() - 1);
         String[] objList = subStr.split(",");
         Log.i(mGlobalTag, "║ " + "total element number : " + objList.length);
         for(String obj:objList) {
@@ -121,6 +122,20 @@ public class JLog {
             Log.i(mGlobalTag,"║ " + "key = " + kv[0].trim() + ", value = " + kv[1].trim());
         }
         printHashMapLine(mGlobalTag, false);
+
+    }
+
+    public static void printArrayListObj(Object list) {
+        printArrayListLine(mGlobalTag, true);
+
+        ArrayList<Object> objs =  (ArrayList<Object>)list;
+        Log.i(mGlobalTag, "║ " + "total element number : " + objs.size());
+        for(int i=0; i<objs.size();i++) {
+            String str = objs.get(i).toString();
+            Log.i(mGlobalTag,"║ " + "item = " + str);
+        }
+
+        printArrayListLine(mGlobalTag, false);
 
     }
 
@@ -340,7 +355,7 @@ public class JLog {
         }
     }
 
-    public static void printStackTraceLine(String tag, boolean isTop) {
+    private static void printStackTraceLine(String tag, boolean isTop) {
         if (isTop) {
             Log.d(tag, "╔════════════════════════════════ Stack Trace Begin ══════════════════════════════════");
         } else {
@@ -348,11 +363,19 @@ public class JLog {
         }
     }
 
-    public static void printHashMapLine(String tag, boolean isTop) {
+    private static void printHashMapLine(String tag, boolean isTop) {
         if (isTop) {
             Log.d(tag, "╔════════════════════════════════ HashMap object Begin ══════════════════════════════════");
         } else {
             Log.d(tag, "╚════════════════════════════════ HashMap object End ════════════════════════════════════");
+        }
+    }
+
+    private static void printArrayListLine(String tag, boolean isTop) {
+        if (isTop) {
+            Log.d(tag, "╔════════════════════════════════ ArrayList object Begin ══════════════════════════════════");
+        } else {
+            Log.d(tag, "╚════════════════════════════════ ArrayList object End ════════════════════════════════════");
         }
     }
 
